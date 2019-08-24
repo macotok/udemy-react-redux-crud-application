@@ -14,6 +14,14 @@ import EventsNew from './components/events-new';
 import EventsShow from './components/events-show';
 import * as serviceWorker from './serviceWorker';
 
+import firebase from 'firebase';
+const config = {
+  apiKey: process.env.API_KEY,
+  authDomain: process.env.AUTH_DOMAIN,
+  projectId: process.env.PROJECT_ID,
+};
+firebase.initializeApp(config);
+
 const enhancer = process.env.NODE_ENV === 'development' ?
  composeWithDevTools(applyMiddleware(thunk)) : applyMiddleware(thunk);
 const store = createStore(reducer, enhancer);
