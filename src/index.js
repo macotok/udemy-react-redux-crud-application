@@ -10,6 +10,7 @@ import './index.css';
 import reducer from './reducers';
 import EventsIndex from './components/events-index';
 import EventsNew from './components/events-new';
+import EventsShow from './components/events-show';
 import * as serviceWorker from './serviceWorker';
 
 const enhancer = process.env.NODE_ENV === 'development' ?
@@ -20,8 +21,10 @@ ReactDOM.render(
   <Provider store={ store }>
     <BrowserRouter>
       <Switch>
-        <Route exact path="/events/new" component={EventsNew} />
+        <Route path="/events/new" component={EventsNew} />
+        <Route path="/events/:id" component={EventsShow} />
         <Route exact path="/" component={EventsIndex} />
+        <Route exact path="/events" component={EventsIndex} />
       </Switch>
     </BrowserRouter>
   </Provider>,
