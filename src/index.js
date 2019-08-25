@@ -14,20 +14,6 @@ import EventsNew from './components/events-new';
 import EventsShow from './components/events-show';
 import * as serviceWorker from './serviceWorker';
 
-import firebase from 'firebase/app';
-import 'firebase/firestore';
-
-const firebaseConfig = {
-  apiKey: process.env.API_KEY,
-  authDomain: process.env.AUTH_DOMAIN,
-  projectId: 'react-crud-c462c',
-};
-firebase.initializeApp(firebaseConfig);
-
-const firestore = firebase.firestore();
-export { firestore };
-
-
 const enhancer = process.env.NODE_ENV === 'development' ?
  composeWithDevTools(applyMiddleware(thunk)) : applyMiddleware(thunk);
 const store = createStore(reducer, enhancer);

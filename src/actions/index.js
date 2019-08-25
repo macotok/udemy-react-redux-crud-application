@@ -1,4 +1,4 @@
-import { firestore } from '../';
+import { firestore } from '../server/firebase';
 
 export const READ_EVENT = 'READ_EVENT';
 export const READ_EVENTS = 'READ_EVENTS';
