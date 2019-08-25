@@ -14,13 +14,19 @@ import EventsNew from './components/events-new';
 import EventsShow from './components/events-show';
 import * as serviceWorker from './serviceWorker';
 
-import firebase from 'firebase';
-const config = {
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+
+const firebaseConfig = {
   apiKey: process.env.API_KEY,
   authDomain: process.env.AUTH_DOMAIN,
-  projectId: process.env.PROJECT_ID,
+  projectId: 'react-crud-c462c',
 };
-firebase.initializeApp(config);
+firebase.initializeApp(firebaseConfig);
+
+const firestore = firebase.firestore();
+export { firestore };
+
 
 const enhancer = process.env.NODE_ENV === 'development' ?
  composeWithDevTools(applyMiddleware(thunk)) : applyMiddleware(thunk);
