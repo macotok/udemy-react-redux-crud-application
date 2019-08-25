@@ -28,7 +28,8 @@ class EventsNew extends Component {
   }
 
   async onSubmit(values) {
-    await this.props.postEvent(values);
+    const newID = Object.values(this.props.events).reduce((id, data) => (id < data.id ? data.id : id), 0) + 1;
+    await this.props.postEvent(Object.assign({}, values, { id: newID }));
     this.props.history.push('/');
   }
 
@@ -62,8 +63,14 @@ const validate = values => {
   return errors;
 }
 
+const mapStateToProps = (state) => {
+  return {
+    events: state.events,
+  }
+}
+
 const mapDispatchToProps = ({ postEvent });
 
-export default connect(null, mapDispatchToProps)(
+export default connect(mapStateToProps, mapDispatchToProps)(
   reduxForm({ validate, form: 'eventNewForm' })(EventsNew)
 );

@@ -25,18 +25,27 @@ export const readEvents = () => async dispatch => {
 };
 
 export const postEvent = values => async dispatch => {
-  const response = await axios.post(`${ROOT_URL}/events${QUERYSTRING}`, values);
-  dispatch({ type: CREATE_EVENT, response })
+  firestore.collection('posts').doc((values.id).toString(10)).set(values)
+  .then(() => {
+    dispatch({ type: CREATE_EVENT, values })
+  })
 };
 
 export const putEvent = values => async dispatch => {
-  const response = await axios.put(`${ROOT_URL}/events/${values.id}${QUERYSTRING}`, values);
-  dispatch({ type: UPDATE_EVENT, response });
+  firestore.collection('posts').doc((values.id).toString(10)).update(values)
+    .then(() => {
+      dispatch({ type: UPDATE_EVENT, values });
+    });
 }
 
 export const getEvent = id => async dispatch => {
-  const response = await axios.get(`${ROOT_URL}/events/${id}${QUERYSTRING}`);
-  dispatch({ type: READ_EVENT, response });
+  firestore.collection('posts').doc(id).get()
+  .then((doc) => {
+    if (doc.exists) {
+      const values = doc.data();
+      dispatch({ type: READ_EVENT, values });
+    }
+  })
 }
 
 export const deleteEvent = id => async dispatch => {
