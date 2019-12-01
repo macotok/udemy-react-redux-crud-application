@@ -6,6 +6,83 @@
 - サーバーはFirebaseを使用
 - [完成URL](https://react-crud-c462c.firebaseapp.com/)
 
+## Redux Thunkでactionに非同期処理を書く
+
+middlewareである「Redux Thunk」を使うとreduxのactionに非同期処理の関数を返すことができるのでその説明になります。
+
+## 通常のaction
+
+actionでは純粋なobjectを返さなければならない。
+そのため非同期処理を書くことができない。
+
+```javascript:action.js
+export const HOGE = 'HOGE';
+
+export const foo = () => ({
+  type: HOGE
+});
+```
+
+## Redux Thunk
+
+### about
+
+公式サイト「[Redux Thunk](https://github.com/reduxjs/redux-thunk)」にはこのように書かれてます。
+
+> 単純な基本的なRedux storeでは、actionをdispatchすることによって簡単な同期更新のみを行うことができます。
+middlewareはstoreの機能を拡張し、storeと対話する非同期ロジックを作成できるようにします。
+thunkは、storeへのアクセスを必要とする複雑な同期ロジックやAJAX requestなどの単純な非同期ロジックなど、基本的なRedux副作用ロジックの推奨middlewareです。
+
+### Setup
+
+```terminal
+$ yarn add redux-thunk
+```
+
+- reduxの`applyMiddleware`関数の引数にthunkを設定
+- createStoreの第二引数に読み込む
+- App componentをwrapしているProvider componentのstore propsに設定
+
+``` javascript:index.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+
+import reducer from './reducers';
+import App from './App.js';
+
+const store = createStore(reducer, applyMiddleware(thunk));
+
+ReactDOM.render(
+  <Provider store={ store }>
+    <App />
+  </Provider>
+  document.getElementById('root')
+);
+```
+
+### actionで導入
+
+- PromiseベースのHTTPクライアントである`axios`を使用
+- 純粋なobjectではなく関数を返せるようになる。第一引数は`dispatch`、第二引数は`getState`を設定
+- axiosがPromiseで出来ているので`async await`を使用
+
+``` javascript:action.js
+import axios from 'axios';
+
+export const HOGE = 'HOGE';
+
+export const foo = () => async (dispatch, getState) => {
+  const { fuga } = getState();
+  const response = await axios.get({REST APIのエンドポイント});
+  dispatch({ type: HOGE, response })
+};
+```
+
+これでreducerに処理が行き渡ります。
+
 
 ## Redux Formのdecoratorで受け取れるpropsについて
 
