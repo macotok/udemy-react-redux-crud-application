@@ -42,6 +42,14 @@ class EventsIndex extends Component {
     }
     return (
       <React.Fragment>
+        <p>
+          このサイトのRepositoryは「
+          <a href="https://github.com/macotok/udemy-react-redux-crud-application" target="_blank">
+            macotok/udemy-react-redux-crud-application
+          </a>
+          」<br />
+          React/ReduxでCRUDアプリケーションを制作しました。
+        </p>
         <FloatingActionButton style={style} containerElement={<Link to="/events/new" />}>
           <ContentAdd />
         </FloatingActionButton>
